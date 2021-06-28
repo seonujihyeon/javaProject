@@ -11,9 +11,20 @@ public class everland {
 		char ticketType;
 		String preferential = null;
 		String ageClassify = null;
+		int addOrder, orderCount = 0;
 	
+		// 누적변수 ticketType, ageClassify, count, price, preferential
+		char[] saveTicketType = new char[100];
+		String[] saveAgeClassify = new String[100];
+		int[] saveCount = new int[100];
+		int[] savePrice = new int[100];
+		String[] savePreferential = new String[100];
+		
+				
 		
 		Scanner myInput = new Scanner(System.in);
+		
+		do {
 		System.out.println("이용날짜를 입력해주세요.");
 		date = myInput.nextInt();
 		System.out.println("\n주민번호 앞자리를 입력해주세요.");
@@ -78,13 +89,8 @@ public class everland {
 			age = age - 1;
 		}
 		
-//		System.out.println("만 나이는: " + age);
 		
-		// 연령 구분
-//		- 경로 : 만 65세 ~
-//		- 소인 : 36개월 ~ 만 12세
-//		- 청소년 : 만 13세 ~ 만 18세
-//		- 36개월 미만 : 무료 이용
+		// 연령 구분 (경로:만65세~/소인:36개월~만12세/청소년:만13세~만18세/36개월 미만: 무료)
 		if(age >= 65) {
 			ageClassify = "경로";
 		}
@@ -101,9 +107,7 @@ public class everland {
 			ageClassify = "36개월미만";
 		}
 
-		// 우대사항 없을 때
-		// 대인청소년 A:60000, B:56000, C:50000
-		// 소인경로 A:48000, B:44000, C:40000
+		// 우대사항 없음
 		if(number == 1 && (ageClassify == "대인" || ageClassify == "청소년")) {
 			switch(ticketType) {
 			case 'A' : price = 60000;
@@ -133,9 +137,7 @@ public class everland {
 			preferential = "없음";
 		}	
 		
-		// 장애인 (본인 우대가 장애정도 심할시 동반인 : 우대가 적용 (최대1명까지))
-		// 대인 A:36000,B:33000,C:30000
-		// 청소년소인경로 A:28000, B:26000, C:24000
+		// 장애인
 		if(number == 2 && ageClassify == "대인") {
 			switch(ticketType) {
 			case 'A' : price = 36000;
@@ -161,9 +163,7 @@ public class everland {
 			preferential = "장애인";
 		}	
 		
-		// 국가유공자 (본인 우대가, 동반인 최대 1명까지 우대가)
-		// 대인 A:30000,B:28000,C:25000
-		// 청소년소인경로 A:24000, B:22000, C:20000
+		// 국가유공자
 		if(number == 3 && ageClassify == "대인") {
 			switch(ticketType) {
 			case 'A' : price = 30000;
@@ -190,8 +190,6 @@ public class everland {
 		}
 		
 		// 다자녀
-		// 대인청소년 A:48000, B:44000, C:40000
-		// 소인경로 A:38000, B:35000, C:32000
 		if(number == 4 && (ageClassify == "대인" || ageClassify == "청소년")) {
 			switch(ticketType) {
 			case 'A' : price = 48000;
@@ -217,7 +215,6 @@ public class everland {
 			preferential = "다자녀";
 		}
 		// 임산부
-		// 대인 A:51000, B:47000, C:42000
 		if(number == 5 && ageClassify == "대인") {
 			switch(ticketType) {
 			case 'A' : price = 51000;
@@ -233,15 +230,34 @@ public class everland {
 		
 		price = price * count;
 		
-		System.out.printf("\n가격은 %d원 입니다.\n감사합니다.", price);
+		System.out.println("\n1. 추가구매, 2. 구매종료 : ");
+		addOrder = myInput.nextInt();
+		
+		saveTicketType[orderCount] = ticketType;
+		saveAgeClassify[orderCount] = ageClassify;
+		saveCount[orderCount] = count;
+		savePrice[orderCount] = price;
+		savePreferential[orderCount] = preferential;
+		orderCount++;
+		 
+		
+		} while(addOrder == 1);
+		int total = 0;
+		for(int index = 0; index < orderCount; index++) {
+			total += savePrice[index];			
+		}
+		System.out.printf("\n가격은 %d원 입니다.\n감사합니다.", total);
 		System.out.println("\n");
 		System.out.println("===================에버랜드===================");
-		System.out.printf("%s티켓 %s X %d  %d원  *%s우대적용\n", 
-						   ticketType, ageClassify, count, price, preferential);
-		System.out.println("============================================");
+		for(int index = 0; index < orderCount; index++) {
+			System.out.printf("%s티켓 %s X %d  %d원  *%s우대적용\n", 
+					saveTicketType[index], saveAgeClassify[index], saveCount[index], 
+					savePrice[index], savePreferential[index]);	
+		}
 		
-	
-	}
+		System.out.println("============================================\n");
 		
+		}
+			
 	
 }
