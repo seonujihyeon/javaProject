@@ -5,44 +5,37 @@ import java.util.Scanner;
 
 public class everland {
 
-	public static void main(String[] args) {
-		
-		int date, birthDate, count, number;
-		int price = 0;
-		char ticketType = 0;
-		String preferential = null;
-		String ageClassify = null;
-		int addOrder;
 	
+
+	public static int date, birthDate, count, number, baseYear, birthYear, age;
+	public static int price = 0;
+	public static char ticketType = 0;
+	public static String preferential = null;
+	public static String ageClassify = null;
+	public static int addOrder;
+
+	public static ArrayList<Character> arrayTicketType = new ArrayList<Character>();
+	public static ArrayList<String> arrayAgeClassify = new ArrayList<String>();
+	public static ArrayList<Integer> arrayCount = new ArrayList<Integer>();
+	public static ArrayList<Integer> arrayPrice = new ArrayList<Integer>();
+	public static ArrayList<String> arrayPreferential = new ArrayList<String>();
 		
-		ArrayList<Character> arrayTicketType = new ArrayList<Character>();
-		ArrayList<String> arrayAgeClassify = new ArrayList<String>();
-		ArrayList<Integer> arrayCount = new ArrayList<Integer>();
-		ArrayList<Integer> arrayPrice = new ArrayList<Integer>();
-		ArrayList<String> arrayPreferential = new ArrayList<String>();
-			
-		
-		Scanner myInput = new Scanner(System.in);
-		
+	public static Scanner myInput = new Scanner(System.in);
+	
+	
+	
+	public static void allClear() {
 		arrayTicketType.clear();
 		arrayAgeClassify.clear();
 		arrayCount.clear();
 		arrayPrice.clear();
-		arrayPreferential.clear();
-		
-		do {
+		arrayPreferential.clear();	
+	}
+
+	public static void inputDate() {
 		System.out.println("이용날짜를 입력해주세요.");
 		date = myInput.nextInt();
 		
-		System.out.println("\n주민번호 앞자리를 입력해주세요.");
-		birthDate = myInput.nextInt();
-		System.out.println("\n몇개를 주문하시겠습니까?");
-		count = myInput.nextInt();
-		System.out.println("\n우대사항을 선택하세요.\n1. 없음(나이 우대는 자동처리)\n"
-				+ "2. 장애인\n3. 국가유공자\n4. 다자녀\n5. 임산부 ");
-		number = myInput.nextInt();
-		
-		// ABC캘린더 티켓종류
 		if (date == 20210904 || date == 20210905 || date == 20210911 || date == 20210912
 			|| date == 20210918 || date == 20210919 || date == 20210920 || date == 20210921
 			|| date == 20210922 || date == 20210925 || date == 20210926 || date == 20211002 
@@ -73,13 +66,13 @@ public class everland {
 		}else {
 				ticketType = 'B';					
 		}
-		
-
+	}
 	
-		//만나이 계산	
-		int baseYear;
-		int birthYear;
-		int age;
+	
+	public static void ageClassify() {
+		
+		System.out.println("\n주민번호 앞자리를 입력해주세요.");
+		birthDate = myInput.nextInt();
 		
 		baseYear = date/10000;
 		birthYear = birthDate/10000;
@@ -89,15 +82,15 @@ public class everland {
 		}else {
 			birthYear = birthYear + 1900;
 		}
-		
 		age = baseYear - birthYear;
+		
 		
 		if (date - baseYear * 10000 < birthDate + ((int)birthYear/100)*1000000 - birthYear * 10000) {
 			age = age - 1;
 		}
 		
 		
-		// 연령 구분 (경로:만65세~/소인:36개월~만12세/청소년:만13세~만18세/36개월 미만: 무료)
+			
 		if(age >= 65) {
 			ageClassify = "경로";
 		}
@@ -113,8 +106,16 @@ public class everland {
 		if(age < 3) {
 			ageClassify = "36개월미만";
 		}
+	 
 
-		// 우대사항 없음
+	}
+	
+	public static void checkPreferential() {
+		
+		System.out.println("\n우대사항을 선택하세요.\n1. 없음(나이 우대는 자동처리)\n"
+				+ "2. 장애인\n3. 국가유공자\n4. 다자녀\n5. 임산부 ");
+		number = myInput.nextInt();
+		
 		if(number == 1 && (ageClassify == "대인" || ageClassify == "청소년")) {
 			switch(ticketType) {
 			case 'A' : price = 60000;
@@ -143,8 +144,6 @@ public class everland {
 			price = 0;
 			preferential = "없음";
 		}	
-		
-		// 장애인
 		if(number == 2 && ageClassify == "대인") {
 			switch(ticketType) {
 			case 'A' : price = 36000;
@@ -233,28 +232,38 @@ public class everland {
 			default :
 			}
 			preferential = "임산부";
-		}			
-		
-		price = price * count;
-		
+		}
+			
+	}
+	
+	public static void inputcount() {
+	System.out.println("\n몇개를 주문하시겠습니까?");
+	count = myInput.nextInt();
+	price = price * count;
+	}
+	
+	public static void inputAddOrder() {
 		System.out.println("\n1. 추가구매, 2. 구매종료 : ");
 		addOrder = myInput.nextInt();
-		
-
+	}
+	
+	public static void addArrayList() {
 		arrayTicketType.add(ticketType);
 		arrayAgeClassify.add(ageClassify);
 		arrayCount.add(count);
 		arrayPrice.add(price);
 		arrayPreferential.add(preferential);
+	}
 	
-		
-		} while(addOrder == 1);
-		
+	public static void totalPrice() {
 		int total = 0;
 		for(int index = 0; index < arrayPrice.size(); index++) {
 			total += arrayPrice.get(index);			
 		}
 		System.out.printf("\n가격은 %d원 입니다.\n감사합니다.", total);
+	}
+	
+	public static void checkFinalTicket() {
 		System.out.println("\n");
 		System.out.println("===================에버랜드===================");
 		for(int index = 0; index < arrayCount.size(); index++) {
@@ -264,8 +273,22 @@ public class everland {
 		}
 		
 		System.out.println("============================================\n");
+	}
+	
+	
+	public static void main(String[] args) {
 		
-		}
-			
+		allClear();
+		do {
+		inputDate();
+		ageClassify();
+		checkPreferential();
+		inputcount();
+		inputAddOrder();
+		addArrayList();
+		} while(addOrder == 1);
+		totalPrice();
+		checkFinalTicket();		
+		}			
 	
 }
