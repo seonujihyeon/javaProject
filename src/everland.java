@@ -7,22 +7,23 @@ public class everland {
 	
 	public static void main(String[] args) {
 		everlandProcess everProcess = new everlandProcess();
-		arrayListClass everlandData = new arrayListClass();
+		arrayListClass arrayData = new arrayListClass();
+		inputProcess inputProcess = new inputProcess();
 		
-		everlandData.allClear();
+		arrayData.allClear();
 		do {
-			everProcess.inputDate();
-			everProcess.inputID();
-			everProcess.ageClassify();
-			everProcess.inputPreferential();
-			everProcess.checkPreferential();
-			everProcess.inputcount();
-			everProcess.inputAddOrder();
-			everlandData.addArrayList(everProcess.ticketType, everProcess.ageClassify, everProcess.count, 
-									everProcess.price, everProcess.preferential);
-		} while(everProcess.addOrder == 1);
-		everlandData.totalPrice();
-		everlandData.checkFinalTicket();		
+			inputProcess.inputDate();
+			inputProcess.inputID();
+			everProcess.ageClassify(inputProcess.birthDate, inputProcess.date);
+			inputProcess.inputPreferential();
+			everProcess.checkPreferential(inputProcess.number, inputProcess.ticketType);
+			inputProcess.inputcount(everProcess.price);
+			inputProcess.inputAddOrder();
+			arrayData.addArrayList(inputProcess.ticketType, everProcess.ageClassify, inputProcess.count, 
+					everProcess.price, everProcess.preferential);
+		} while(inputProcess.addOrder == 1);
+		arrayData.totalPrice();
+		arrayData.checkFinalTicket();		
 		}			
 	
 }
