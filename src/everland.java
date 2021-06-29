@@ -1,5 +1,6 @@
 package javaChap2;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class everland {
@@ -8,25 +9,31 @@ public class everland {
 		
 		int date, birthDate, count, number;
 		int price = 0;
-		char ticketType;
+		char ticketType = 0;
 		String preferential = null;
 		String ageClassify = null;
-		int addOrder, orderCount = 0;
+		int addOrder;
 	
-		// 누적변수 ticketType, ageClassify, count, price, preferential
-		char[] saveTicketType = new char[100];
-		String[] saveAgeClassify = new String[100];
-		int[] saveCount = new int[100];
-		int[] savePrice = new int[100];
-		String[] savePreferential = new String[100];
 		
-				
+		ArrayList<Character> arrayTicketType = new ArrayList<Character>();
+		ArrayList<String> arrayAgeClassify = new ArrayList<String>();
+		ArrayList<Integer> arrayCount = new ArrayList<Integer>();
+		ArrayList<Integer> arrayPrice = new ArrayList<Integer>();
+		ArrayList<String> arrayPreferential = new ArrayList<String>();
+			
 		
 		Scanner myInput = new Scanner(System.in);
+		
+		arrayTicketType.clear();
+		arrayAgeClassify.clear();
+		arrayCount.clear();
+		arrayPrice.clear();
+		arrayPreferential.clear();
 		
 		do {
 		System.out.println("이용날짜를 입력해주세요.");
 		date = myInput.nextInt();
+		
 		System.out.println("\n주민번호 앞자리를 입력해주세요.");
 		birthDate = myInput.nextInt();
 		System.out.println("\n몇개를 주문하시겠습니까?");
@@ -62,7 +69,9 @@ public class everland {
 			|| date == 20211122 || date == 20211123 || date == 20211124 || date == 20211125
 			|| date == 20211126 || date == 20211129 || date == 20211130) {
 				ticketType = 'C';
-			
+					
+		}else if (date < 20210601 || date > 20211130) {
+			System.out.println("다시 입력해주세요.");
 		}else {
 				ticketType = 'B';					
 		}
@@ -233,26 +242,27 @@ public class everland {
 		System.out.println("\n1. 추가구매, 2. 구매종료 : ");
 		addOrder = myInput.nextInt();
 		
-		saveTicketType[orderCount] = ticketType;
-		saveAgeClassify[orderCount] = ageClassify;
-		saveCount[orderCount] = count;
-		savePrice[orderCount] = price;
-		savePreferential[orderCount] = preferential;
-		orderCount++;
-		 
+
+		arrayTicketType.add(ticketType);
+		arrayAgeClassify.add(ageClassify);
+		arrayCount.add(count);
+		arrayPrice.add(price);
+		arrayPreferential.add(preferential);
+	
 		
 		} while(addOrder == 1);
+		
 		int total = 0;
-		for(int index = 0; index < orderCount; index++) {
-			total += savePrice[index];			
+		for(int index = 0; index < arrayPrice.size(); index++) {
+			total += arrayPrice.get(index);			
 		}
 		System.out.printf("\n가격은 %d원 입니다.\n감사합니다.", total);
 		System.out.println("\n");
 		System.out.println("===================에버랜드===================");
-		for(int index = 0; index < orderCount; index++) {
+		for(int index = 0; index < arrayCount.size(); index++) {
 			System.out.printf("%s티켓 %s X %d  %d원  *%s우대적용\n", 
-					saveTicketType[index], saveAgeClassify[index], saveCount[index], 
-					savePrice[index], savePreferential[index]);	
+					arrayTicketType.get(index), arrayAgeClassify.get(index), 
+					arrayCount.get(index), arrayPrice.get(index), arrayPreferential.get(index));	
 		}
 		
 		System.out.println("============================================\n");
