@@ -69,9 +69,7 @@ public class everland {
 			|| date == 20211122 || date == 20211123 || date == 20211124 || date == 20211125
 			|| date == 20211126 || date == 20211129 || date == 20211130) {
 				ticketType = 'C';
-					
-		}else if (date < 20210601 || date > 20211130) {
-			System.out.println("다시 입력해주세요.");
+			
 		}else {
 				ticketType = 'B';					
 		}
