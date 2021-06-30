@@ -1,1 +1,1 @@
-# javaProject
+# EverlandProject
